@@ -227,7 +227,7 @@ command! OllamaCheck execute "%OllamaTask " . g:ollama_check_prompt
 
 "}}}
 
-"{{{
+"{{{ NerdTree
 let NERDTreeShowHidden=1
 nnoremap <C-e> :NERDTreeToggle<CR>
 autocmd VimEnter * :NERDTree | wincmd p
@@ -270,4 +270,8 @@ let g:NERDTreePatternMatchHighlightFullName = 1
 let g:NERDTreeSyntaxEnabledExtensions = ['c', 'h', 'c++', 'cpp', 'php', 'rb', 'js', 'css', 'html'] 
 let g:NERDTreeSyntaxEnabledExactMatches = ['node_modules', 'favicon.ico'] 
 let g:NERDTreeHighlightCursorline = 0
+"}}}
+
+" LeaderF{{{
+    map <C-p> :LeaderfFile<CR>
 "}}}
