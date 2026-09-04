@@ -40,7 +40,7 @@
     " vnoremap – Permite mapear as teclas no modo visual.
 
     map <C-t> :tabn<CR>
-    map <C-r> :tabc<CR>
+"    map <C-r> :tabc<CR>
     map <C-b> :bn<CR>
 
     nnoremap <Up> <Nop> 
@@ -136,6 +136,10 @@
     "**0r: O comando r (read) insere o conteúdo de um arquivo externo no arquivo atual. O 0 força o Vim a inserir esse conteúdo logo na linha zero (ou seja, no primeiríssimo topo do documento).
     "**~/.vim/skel/skel.%:e: Este é o caminho do modelo. A mágica está no %:e, que pega a extensão do arquivo atual.
     
+    augroup Cocenter
+        autocmd!
+        autocmd User CocNvimInit if index(['pyhton','java','javascript','c'], &filetype) >= 0 | CocDiagnostics | CocOutiline | endif
+    augroup END
     
     
     augroup sincronizar
