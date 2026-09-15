@@ -17,6 +17,12 @@ vim.cmd([[
     Plug 'nvim-tree/nvim-web-devicons'
     Plug 'nvim-tree/nvim-tree.lua'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'MunifTanjim/nui.nvim'
+    Plug 'folke/noice.nvim'
+    Plug 'tpope/vim-dadbod'
+    Plug 'kristijanhusak/vim-dadbod-ui'
+    Plug 'kristijanhusak/vim-dadbod-completion'
+    Plug 'github/copilot.vim'
 	call plug#end()
 ]])
 
@@ -234,3 +240,49 @@ vim.api.nvim_create_autocmd("CursorHold", {
   end,
 })
 --}}}
+
+-- ============================================================================{{{
+-- CMDILINE CENTRO NEOVIM
+-- ============================================================================
+require("noice").setup({
+  cmdline = {
+    enabled = true,
+    view = "cmdline_popup", -- Posiciona a caixa de comando no centro da tela
+    opts = {},
+  },
+  messages = {
+    enabled = true, -- Redireciona as mensagens nativas para a interface flutuante
+  },
+  popupmenu = {
+    enabled = true, -- Utiliza menu flutuante para autocompletar da linha de comando
+  },
+  lsp = {
+    -- Desativa integrações LSP caso você esteja usando apenas o CoC.nvim
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.set_styled_text_op"] = true,
+    },
+  },
+  presets = {
+    bottom_search = false,    -- Mantém a busca `/` no pop-up central
+    command_palette = true,   -- Estiliza a linha de comandos como uma paleta
+    long_message_to_split = true, 
+  },
+})
+--}}}
+
+-- ============================================================================{{{
+-- BACO DE DADOS
+-- ============================================================================
+
+-- Salva as conexões salvas na pasta do Neovim
+vim.g.db_ui_save_location = vim.fn.stdpath("config") .. "/db_ui"
+
+-- Abre a interface em uma aba nova ou painel lateral
+vim.g.db_ui_use_nerd_fonts = 1
+vim.g.db_ui_show_database_icon = 1
+
+-- Mapeamento para abrir/fechar a interface do Banco de Dados (<leader>db)
+vim.keymap.set("n", "<leader>db", ":DBUIToggle<CR>", { silent = true, desc = "Alternar DB UI" })
+
+-- }}}
