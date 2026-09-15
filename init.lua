@@ -1,10 +1,13 @@
---███╗   ██╗███████╗██╗   ██╗██╗███╗   ███╗
---████╗  ██║██╔════╝██║   ██║██║████╗ ████║
---██╔██╗ ██║█████╗  ██║   ██║██║██╔████╔██║
---██║╚██╗██║██╔══╝  ██║   ██║██║██║╚██╔╝██║
---██║ ╚████║███████╗╚██████╔╝██║██║ ╚═╝ ██║
---╚═╝  ╚═══╝╚══════╝ ╚═════╝ ╚═╝╚═╝     ╚═╝
+--  ███╗   ██╗███████╗██╗   ██╗██╗███╗   ███╗
+--  ████╗  ██║██╔════╝██║   ██║██║████╗ ████║
+--  ██╔██╗ ██║█████╗  ██║   ██║██║██╔████╔██║
+--  ██║╚██╗██║██╔══╝  ██║   ██║██║██║╚██╔╝██║
+--  ██║ ╚████║███████╗╚██████╔╝██║██║ ╚═╝ ██║
+--  ╚═╝  ╚═══╝╚══════╝ ╚═════╝ ╚═╝╚═╝     ╚═╝
 
+-- ============================================================================{{{ 
+    -- CONFIGURAÇÕES INICIAIS DO NEOVIM
+-- ============================================================================
 local opt = vim.opt
 local g = vim.g
 local keymap = vim.keymap.set
@@ -22,11 +25,12 @@ vim.cmd([[
     Plug 'tpope/vim-dadbod'
     Plug 'kristijanhusak/vim-dadbod-ui'
     Plug 'kristijanhusak/vim-dadbod-completion'
+    Plug 'nvim-lualine/lualine.nvim'
     Plug 'github/copilot.vim'
 	call plug#end()
 ]])
 
-vim.cmd[[colorscheme dracula]]
+vim.cmd[[colorscheme dracula]]-- }}}
 
 -- ============================================================================{{{
 -- CONFIGURAÇÕES DE INTERFACE E OPÇÕES GERAIS DO SISTEMA
@@ -142,6 +146,7 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 -- ============================================================================{{{
 -- MAPEAMENTOS DE TECLAS (KEYMAPS)
 -- ============================================================================
+
 keymap("n", "<C-t>", ":tabn<CR>", { silent = true })
 keymap("n", "<C-b>", ":bn<CR>", { silent = true })
 
@@ -286,3 +291,25 @@ vim.g.db_ui_show_database_icon = 1
 vim.keymap.set("n", "<leader>db", ":DBUIToggle<CR>", { silent = true, desc = "Alternar DB UI" })
 
 -- }}}
+
+-- ============================================================================{{{
+-- LUALINE NEOVIM
+-- ============================================================================
+
+require('lualine').setup({
+  options = {
+    icons_enabled = true,
+    theme = 'dracula',
+    section_separators = '',
+    component_separators = '',
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {' '}
+    }
+})
+---}}}
