@@ -103,47 +103,6 @@ opt.guicursor = "n-v-c:block,i-ci-ve:ver25"
 
 -- }}}
 
--- {{{
-local auto_save = vim.api.nvim_create_augroup("AutoSave", { clear = true })
-vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
-  group = auto_save,
-  pattern = "*",
-  command = "silent! update",
-})
-
-local filetype_vim = vim.api.nvim_create_augroup("filetype_vim", { clear = true })
-vim.api.nvim_create_autocmd("FileType", {
-  group = filetype_vim,
-  pattern = { "vim", "lua" },
-  callback = function()
-    vim.opt_local.foldmethod = "marker"
-  end,
-})
-
-local sincronizar = vim.api.nvim_create_augroup("sincronizar", { clear = true })
-vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "CursorHold", "CursorHoldI" }, {
-  group = sincronizar,
-  pattern = "*",
-  callback = function()
-    if vim.fn.mode() ~= "c" then
-      vim.cmd("checktime")
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd("BufNewFile", {
-  pattern = "*",
-  callback = function()
-    local ext = vim.fn.expand("%:e")
-    local skel_path = vim.fn.expand("~/.config/nvim/skel/skel." .. ext)
-    if vim.fn.filereadable(skel_path) == 1 then
-      vim.cmd("silent! 0r " .. skel_path)
-    end
-  end,
-})
-
--- }}}
-
 -- ============================================================================{{{
 -- MAPEAMENTOS DE TECLAS (KEYMAPS)
 -- ============================================================================
@@ -353,7 +312,7 @@ vim.api.nvim_create_autocmd("FileType", {
     end
 
     -- Define o atalho APENAS para o buffer (arquivo) Java que foi aberto
-    vim.keymap.set("n", "<C-x>", compilar_java_src, {
+    keymap("n", "<C-x>", compilar_java_src, {
       buffer = true, -- CRUCIAL: impede que o atalho vaze para outros tipos de arquivos
       desc = "Cria arquiv .class",
     })
@@ -361,3 +320,92 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+local auto_save = vim.api.nvim_create_augroup("AutoSave", { clear = true })
+vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+  group = auto_save,
+  pattern = "*",
+  command = "silent! update",
+})
+
+local filetype_vim = vim.api.nvim_create_augroup("filetype_vim", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = filetype_vim,
+  pattern = { "vim", "lua" },
+  callback = function()
+  vim.opt_local.foldmethod = "marker"
+  end,
+})
+
+local sincronizar = vim.api.nvim_create_augroup("sincronizar", { clear = true })
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "CursorHold", "CursorHoldI" }, {
+  group = sincronizar,
+  pattern = "*",
+  callback = function()
+    if vim.fn.mode() ~= "c" then
+      vim.cmd("checktime")
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufNewFile", {
+  pattern = "*",
+  callback = function()
+    local ext = vim.fn.expand("%:e")
+    local skel_path = vim.fn.expand("~/.config/nvim/skel/skel." .. ext)
+    if vim.fn.filereadable(skel_path) == 1 then
+      vim.cmd("silent! 0r " .. skel_path)
+    end
+  end,
+})
+
+local cocenter = vim.api.nvim_create_augroup("cocenter", { clear = true })
+vim.api.nvim_create_autocmd({ "User" }, {
+  group = cocenter,
+  pattern = "CocNvimInit",
+  callback = function()
+    local ext = vim.fn.expand("%:e")
+    local extenções_validas = {java = true, py = true, js = true, ts = true, c = true, cpp = true}
+    if extenções_validas[ext] then
+        vim.cmd("CocDiagnostic")
+    end
+  end,
+})
+
+
+local auto_save = vim.api.nvim_create_augroup("AutoSave", { clear = true })
+vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+  group = auto_save,
+  pattern = "*",
+  command = "silent! update",
+})
+
+local filetype_vim = vim.api.nvim_create_augroup("filetype_vim", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = filetype_vim,
+  pattern = { "vim", "lua" },
+  callback = function()
+  vim.opt_local.foldmethod = "marker"
+  end,
+})
+
+local sincronizar = vim.api.nvim_create_augroup("sincronizar", { clear = true })
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "CursorHold", "CursorHoldI" }, {
+  group = sincronizar,
+  pattern = "*",
+  callback = function()
+    if vim.fn.mode() ~= "c" then
+      vim.cmd("checktime")
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufNewFile", {
+  pattern = "*",
+  callback = function()
+    local ext = vim.fn.expand("%:e")
+    local skel_path = vim.fn.expand("~/.config/nvim/skel/skel." .. ext)
+    if vim.fn.filereadable(skel_path) == 1 then
+      vim.cmd("silent! 0r " .. skel_path)
+    end
+  end,
+})
