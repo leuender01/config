@@ -14,6 +14,7 @@ local keymap = vim.keymap.set
 
 vim.cmd([[
 	call plug#begin('~/.local/share/nvim/plugged')
+    Plug 'OXY2DEV/markview.nvim'
 	Plug 'Mofiqul/dracula.nvim'
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
@@ -313,3 +314,50 @@ require('lualine').setup({
     }
 })
 ---}}}
+
+-- ============================================================================{{{
+-- LUASCRPT NEOVIM
+-- ============================================================================
+
+--vim.api.nvim_create_autocmd("FileType", {
+--    pattern = "java",
+--    callback = function()
+--        local function compilar_javac_src()
+--            vim.cmd("write")
+--            
+--            if vim.fn.isdirectory("src") == 0 then
+--                vim.fn.mkdir("src", "p")
+--            end
+--            
+--            local file_current = vim.fn.expand("%:p")
+--            vim.cmd("!javac -d src " .. file_current)
+--
+--        keymap.set("n", "C-x", compilar_javac_src, {
+--            buffer = true, desc = "Compilar arquivo Java" }) end,
+--})
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "java", -- Monitora e ativa apenas quando o arquivo for Java
+  callback = function()
+    
+    -- Função interna que cria a pasta e compila
+    local function compilar_java_src()
+      vim.cmd("write") -- Salva o arquivo atual
+
+      -- Cria o diretório 'src' se ele não existir
+      if vim.fn.isdirectory("src") == 0 then
+        vim.fn.mkdir("src", "p")
+      end
+
+      local arquivo_atual = vim.fn.expand("%")
+      vim.cmd("!javac -d src " .. arquivo_atual)
+    end
+
+    -- Define o atalho APENAS para o buffer (arquivo) Java que foi aberto
+    vim.keymap.set("n", "<C-x>", compilar_java_src, {
+      buffer = true, -- CRUCIAL: impede que o atalho vaze para outros tipos de arquivos
+      desc = "Cria arquiv .class",
+    })
+
+  end,
+})
+
