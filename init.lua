@@ -229,7 +229,7 @@ require("noice").setup({
     },
   },
   presets = {
-    bottom_search = false,    -- Mantém a busca `/` no pop-up central
+    bottom_search = true,    -- Mantém a busca `/` no pop-up central
     command_palette = true,   -- Estiliza a linha de comandos como uma paleta
     long_message_to_split = true, 
   },
@@ -294,6 +294,21 @@ require('lualine').setup({
 --        keymap.set("n", "C-x", compilar_javac_src, {
 --            buffer = true, desc = "Compilar arquivo Java" }) end,
 --})
+vim.api.nvim_create_autocmd("BufNewFile", {
+  pattern = "*",
+  callback = function()
+    local ext = vim.fn.expand("%:e")
+    local skel_path = vim.fn.expand("~/.config/nvim/skel/skel." .. ext)
+    if vim.fn.filereadable(skel_path) == 1 then
+      vim.cmd("silent! 0r " .. skel_path)
+      if ext == "java" then
+        local filename = vim.fn.expand('%:t:r')
+        vim.cmd("silent! %s/Underfield/" .. filename .. "/ge")
+        end
+    end
+  end,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "java", -- Monitora e ativa apenas quando o arquivo for Java
   callback = function()
@@ -347,16 +362,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "CursorHold", "CursorHo
   end,
 })
 
-vim.api.nvim_create_autocmd("BufNewFile", {
-  pattern = "*",
-  callback = function()
-    local ext = vim.fn.expand("%:e")
-    local skel_path = vim.fn.expand("~/.config/nvim/skel/skel." .. ext)
-    if vim.fn.filereadable(skel_path) == 1 then
-      vim.cmd("silent! 0r " .. skel_path)
-    end
-  end,
-})
 
 local cocenter = vim.api.nvim_create_augroup("cocenter", { clear = true })
 vim.api.nvim_create_autocmd({ "User" }, {
@@ -399,13 +404,3 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "CursorHold", "CursorHo
   end,
 })
 
-vim.api.nvim_create_autocmd("BufNewFile", {
-  pattern = "*",
-  callback = function()
-    local ext = vim.fn.expand("%:e")
-    local skel_path = vim.fn.expand("~/.config/nvim/skel/skel." .. ext)
-    if vim.fn.filereadable(skel_path) == 1 then
-      vim.cmd("silent! 0r " .. skel_path)
-    end
-  end,
-})

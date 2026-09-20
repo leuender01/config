@@ -24,7 +24,7 @@ function! Learquivo(...)
             if !empty(l:caminho_atual)
                 call add(l:arg_total, l:caminho_atual)
             endif
-        elseif l:arg =~ '\*'
+l       elseif l:arg =~ '\*'
             let l:achados = glob(l:arg, 0, 1)
             let l:arg_total = extend(l:arg_total, l:achados)
         else
