@@ -297,7 +297,7 @@ require('lualine').setup({
 vim.api.nvim_create_autocmd("BufNewFile", {
   pattern = "*",
   callback = function()
-    local ext = vim.fn.expand("%:e")
+   local ext = vim.fn.expand("%:e")
     local skel_path = vim.fn.expand("~/.config/nvim/skel/skel." .. ext)
     if vim.fn.filereadable(skel_path) == 1 then
       vim.cmd("silent! 0r " .. skel_path)
@@ -331,7 +331,6 @@ vim.api.nvim_create_autocmd("FileType", {
       buffer = true, -- CRUCIAL: impede que o atalho vaze para outros tipos de arquivos
       desc = "Cria arquiv .class",
     })
-
   end,
 })
 
@@ -371,6 +370,14 @@ vim.api.nvim_create_autocmd({ "User" }, {
     local ext = vim.fn.expand("%:e")
     local extenções_validas = {java = true, py = true, js = true, ts = true, c = true, cpp = true}
     if extenções_validas[ext] then
+        keymap("n", "<C-i>", "<cmd>CocOutline<CR>", {
+            buffer = true,
+            desc = "Abre o coc Outline"
+        })
+        keymap("n", "<C-d>", "<cmd>CocDiagnostic<CR>", {
+            buffer = true,
+            desc = "Abre o coc CocDiagnostic"
+        })
         vim.cmd("CocDiagnostic")
     end
   end,
